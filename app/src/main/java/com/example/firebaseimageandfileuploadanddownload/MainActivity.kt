@@ -17,6 +17,8 @@ import com.google.firebase.storage.ktx.storage
 class MainActivity : AppCompatActivity() {
     private lateinit var imageBtn: Button
     private lateinit var fileBtn: Button
+    private lateinit var imageDwnBtn: Button
+    private lateinit var fileDwnBtn: Button
     private lateinit var progressDialog: ProgressDialog
     private lateinit var notificationImage: TextView
     private val storage: FirebaseStorage = Firebase.storage
@@ -27,9 +29,14 @@ class MainActivity : AppCompatActivity() {
 
         // Initialize Firebase Storage reference
         storageReference = storage.reference.child("images") // Replace with your actual image path
-        notificationImage=findViewById(R.id.notificationImage)
-
+        notificationImage = findViewById(R.id.notificationImage)
         imageBtn = findViewById(R.id.imageBtn)
+        fileBtn = findViewById(R.id.fileBtn)
+        fileBtn.setOnClickListener { }
+        imageDwnBtn = findViewById(R.id.dwnImageBtn)
+        imageDwnBtn.setOnClickListener { }
+        fileDwnBtn = findViewById(R.id.dwnFileBtn)
+        fileDwnBtn.setOnClickListener { }
         imageBtn.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "image/*"
@@ -38,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
     private fun uploadImage(uri: Uri) {
         val progressDialog = ProgressDialog(this)
         progressDialog.setTitle("Uploading Image")
@@ -62,7 +70,8 @@ class MainActivity : AppCompatActivity() {
             progressDialog.dismiss()
             notificationImage.text = "Image upload failed"
         }.addOnProgressListener { taskSnapshot ->
-            val progress = (100.0 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount).toInt()
+            val progress =
+                (100.0 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount).toInt()
             progressDialog.progress = progress
         }
 
